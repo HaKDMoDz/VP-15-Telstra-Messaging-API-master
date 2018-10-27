@@ -9,23 +9,32 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
+
+
 namespace VP_15_Base_Project
 {
+
+    
     public partial class Form1 : Form
     {
+
+        
         public Form1()
         {
+            
             InitializeComponent();
             
             DialogResult dialogResult = MessageBox.Show("Have you got a client id & secret?", "Requirements", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
-                File = ""
-                var lines = File.ReadAllLines("c:\\file.txt");
+                //                var lines = File.ReadAllLines("\\clientKeys.txt");
+                keyEntryForm kEF = new keyEntryForm();
+                kEF.Show();
             }
             else if (dialogResult == DialogResult.No)
             {
                 System.Diagnostics.Process.Start("https://dev.telstra.com/telstra_ui/nojs/register");
+                AppExit();
             }
         }
 
@@ -75,6 +84,11 @@ namespace VP_15_Base_Project
         }
 
         #endregion
+        
+        void AppExit()
+        {
+            Application.Exit();
+        }
 
         private void debugOutput(string strDebugText)
         {
