@@ -13,29 +13,12 @@ using System.IO;
 
 namespace VP_15_Base_Project
 {
-
-    
     public partial class Form1 : Form
     {
-
         
         public Form1()
         {
-            
             InitializeComponent();
-            
-            DialogResult dialogResult = MessageBox.Show("Have you got a client id & secret?", "Requirements", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dialogResult == DialogResult.Yes)
-            {
-                //                var lines = File.ReadAllLines("\\clientKeys.txt");
-                keyEntryForm kEF = new keyEntryForm();
-                kEF.Show();
-            }
-            else if (dialogResult == DialogResult.No)
-            {
-                System.Diagnostics.Process.Start("https://dev.telstra.com/telstra_ui/nojs/register");
-                AppExit();
-            }
         }
 
         #region UI Event Handlers
@@ -85,11 +68,6 @@ namespace VP_15_Base_Project
 
         #endregion
         
-        void AppExit()
-        {
-            Application.Exit();
-        }
-
         private void debugOutput(string strDebugText)
         {
             try
@@ -128,6 +106,28 @@ namespace VP_15_Base_Project
 
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            const Int32 BufferSize = 128;
+            using (var fileStream = File.OpenRead("..//clientKeys.txt"))
+            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+            {
+                
+                String line;
+                while ((line = streamReader.ReadLine()) != null)
+                {
+                    if(line.Contains(':'))
+                    {
+                        line.Replace(':', '\r');
+                    }
+                    string[] keys = line.Split(':');
+                    txtClientID.Text = keys[0];
+                    txtClientSecret.Text = keys[1];
+                }
+            }
+            cmdGO.PerformClick();    // Process line
+            //txtResponse.Text.Substring()
+        }
     }
 }
 
